@@ -7,16 +7,21 @@ import seaborn as sns
 import plotly.express as px
 from plotly.subplots import make_subplots
 from datetime import datetime
+
 covid_df=pd.read_csv("/content/covid_19_india (1).csv")
 covid_df.head(10)
+
 covid_df.drop(["Sno","Time","ConfirmedIndianNational","ConfirmedForeignNational"], inplace=True, axis=1)
 covid_df.head()
+
 covid_df['Date']=pd.to_datetime(covid_df['Date'], format='%Y-%m-%d')
 covid_df.head()
+
 #Active Cases
 
 covid_df['Active_Cases']=covid_df['Confirmed']- (covid_df['Cured']+covid_df['Deaths'])
 covid_df.tail()
+
 statewise=pd.pivot_table(covid_df,values=["Confirmed","Cured","Deaths"],index= "State/UnionTerritory", aggfunc=max)
 statewise["Recovery Rate"]=statewise["Cured"]*100/statewise["Confirmed"]
 statewise["Mortality Rate"]=statewise["Deaths"]*100/statewise["Confirmed"]
